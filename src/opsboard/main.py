@@ -1,6 +1,11 @@
 from fastapi import FastAPI
+from src.opsboard.routers import users
+from src.opsboard.core.database import engine
+from src.opsboard.core.base import Base
 
-app = FastAPI()
+
+app = FastAPI(title="Ops Board")
+app.include_router(users.router)
 
 
 @app.get("/")
