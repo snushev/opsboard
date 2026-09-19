@@ -1,6 +1,8 @@
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
+from src.opsboard.core.roles import UserRole
+
 
 class UserCreate(BaseModel):
     email: str
@@ -13,6 +15,7 @@ class UserRead(BaseModel):
     email: str
     username: str
     is_active: bool
+    role: UserRole
     created_at: datetime
     updated_at: datetime
 
