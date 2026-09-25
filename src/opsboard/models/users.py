@@ -1,6 +1,6 @@
 from src.opsboard.core.base import Base
 from datetime import datetime
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Boolean, DateTime, Enum, String, func
 from src.opsboard.core.roles import UserRole
 
@@ -19,4 +19,18 @@ class User(Base):
     )
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(True), server_default=func.now(), onupdate=func.now()
+    )
+
+    projects: Mapped[list["Project"]] = relationship(
+        back_populates="owner",
+    )
+
+    assigned_tasks: Mapped[list["Task"]] = relationship(
+        back_populates="assignee",
+        foreign_keys="Task.assignee_id",
+    )
+
+    created_tasks: Mapped[list["Task"]] = relationship(
+        back_populates="creator",
+        foreign_keys="Task.creator_id",
     )

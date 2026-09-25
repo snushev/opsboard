@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import DateTime, Enum, ForeignKey, String, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.opsboard.core.base import Base
 from src.opsboard.core.enums import TaskPriority, TaskStatus
@@ -57,4 +57,18 @@ class Task(Base):
         DateTime(True),
         server_default=func.now(),
         onupdate=func.now(),
+    )
+
+    project: Mapped["Project"] = relationship(
+        back_populates="tasks",
+    )
+
+    assignee: Mapped["User | None"] = relationship(
+        back_populates="assigned_tasks",
+        foreign_keys=[assignee_id],
+    )
+
+    creator: Mapped["User"] = relationship(
+        back_populates="created_tasks",
+        foreign_keys=[creator_id],
     )

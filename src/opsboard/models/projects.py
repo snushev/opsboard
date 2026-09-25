@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import DateTime, ForeignKey, String, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.opsboard.core.base import Base
 
@@ -25,4 +25,11 @@ class Project(Base):
         DateTime(True),
         server_default=func.now(),
         onupdate=func.now(),
+    )
+    owner: Mapped["User"] = relationship(
+        back_populates="projects",
+    )
+
+    tasks: Mapped[list["Task"]] = relationship(
+        back_populates="project",
     )
